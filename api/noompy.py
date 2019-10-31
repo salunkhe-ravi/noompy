@@ -40,8 +40,8 @@ class NoomPy:
     def update_data(self, update_query):
         pass
 
-    data = pd.read_excel("sample_datasheet.xlsx", sheet_name='Sheet1')
-
-    res = data[(data['make'] == 'audi') & (data['body_style'] == 'ravi')].get('fuel_type').to_string(index=False)
-
-    print(str(res))
+    # data = pd.read_excel("sample_datasheet.xlsx", sheet_name='Sheet1')
+    #
+    # res = data[(data['make'] == 'audi') & (data['body_style'] == 'ravi')].get('fuel_type').to_string(index=False)
+    #
+    # print(str(res))
