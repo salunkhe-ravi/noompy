@@ -16,6 +16,7 @@ __author__ = "Ravi Salunkhe"
 
 
 class NoomPy:
+
     global_excel_file_path = None
 
     def __init__(self, excel_path=None):
@@ -30,7 +31,7 @@ class NoomPy:
             print('Please provide the excel_path')
             print_stack()
 
-    def get_data(self, select_query):
+    def select_data(self, select_query):
         result = execute_query(global_excel_file_path, select_query)
         return result
 
@@ -39,6 +40,16 @@ class NoomPy:
 
     def update_data(self, update_query):
         pass
+
+    def get_data(self, data=None, key=None):
+        if data and key is not None:
+            return data.get(key)
+        else:
+            print('data or key is None')
+
+
+
+
 
     # data = pd.read_excel("sample_datasheet.xlsx", sheet_name='Sheet1')
     #
