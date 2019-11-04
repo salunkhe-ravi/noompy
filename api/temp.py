@@ -50,7 +50,7 @@ from api.noompy import NoomPy
 
 # UPDATE Example #2
 # noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-# res = noom.update_data(update_query="UPDATE Sheet1 SET make=test WHERE tc_id=10.11 AND body_style=ravi")
+# res = noom.update_data(update_query="UPDATE Sheet1 SET make=test2 WHERE tc_id=10.11 AND body_style=ravi")
 # print(res)
 
 
