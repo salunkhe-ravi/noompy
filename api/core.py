@@ -4,6 +4,7 @@ import pandas as pd
 data = None
 query_type = None
 
+
 def query_builder(data, query):
     # splitting the query to work on building the expression from the "from" part
     # only supported till 4 "AND" statements

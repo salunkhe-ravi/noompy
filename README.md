@@ -3,7 +3,6 @@ noompy is an Excel API which helps you to "query" your xls & xlsx files. It supp
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Installing
 
@@ -13,25 +12,104 @@ pip install noompy
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
+## Usage
 
-Explain how to run the automated tests for this system
+###SELECT Query Examples
 
-### Break down into end to end tests
-
-Explain what these tests test and why
+#### Example # 1
 
 ```
-Give an example
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=40")
+get_wheel_base = noom.get_data(data=res, key='some_col_name')
+print(get_wheel_base)
+print(res)
+
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
+#### Example # 2
 
 ```
-Give an example
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT wheel_base FROM Sheet1 WHERE tc_id=5.jgf")
+print(res)
+
 ```
+
+#### Example # 3
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=5.jgf AND wheel_base=77.77")
+get_make = noom.get_data(data=res, key='make')
+print(get_make)
+print(res)
+
+```
+
+#### Example # 4
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=5.jgf AND wheel_base=77.77 AND engine_location=front")
+get_make = noom.get_data(data=res, key='make')
+print(get_make)
+print(res)
+
+```
+
+
+#### Example # 5
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=5.jgf AND wheel_base=77.77 AND engine_location=front AND length=176.6")
+get_make = noom.get_data(data=res, key='make')
+print(get_make)
+print(res)
+
+```
+
+#### Example # 5
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=5.jgf AND wheel_base=77.77 AND engine_location=front AND length=176.6 AND price=17450")
+get_make = noom.get_data(data=res, key='make')
+print(get_make)
+print(res)
+
+```
+
+###UPDATE Query Examples
+
+#### Example # 1
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+res = noom.update_data(update_query="UPDATE Sheet1 SET make=test WHERE tc_id=10.11")
+print(res)
+
+```
+
+#### Example # 2
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+res = noom.update_data(update_query="UPDATE Sheet1 SET make=test2 WHERE tc_id=10.11 AND body_style=ravi")
+print(res)
+
+```
+
 
 ## Deployment
 
@@ -39,13 +117,13 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [pandas](http://www.dropwizard.io/1.0.2/docs/) - The core framework used for excel dataframe manipulation
+* [xlrd/xlwt](https://maven.apache.org/) - Excel read/write
+
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests.
 
 ## Versioning
 
