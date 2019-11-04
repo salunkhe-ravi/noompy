@@ -4,18 +4,6 @@ import pandas as pd
 data = None
 query_type = None
 
-
-# def resolve_query(data, query):
-#     # resolving and redirecting teh query to relevant
-#     if query.split(" ", 1)[0].strip() == 'SELECT':
-#         return query_builder(data, query)
-#     elif query.split(" ", 1)[0].strip() == 'UPDATE':
-#         return query_builder(data, query)
-#     else:
-#         print('The query statement provided is incorrect - only SELECT and UPDATE is supported! ')
-#         print_stack()
-
-
 def query_builder(data, query):
     # splitting the query to work on building the expression from the "from" part
     # only supported till 4 "AND" statements
