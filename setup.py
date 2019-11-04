@@ -24,7 +24,7 @@ setup(
         'xlrd',
         'xlwt',
     ],
-    download_url='https://github.com/salunkhe-ravi/noompy/archive/v1.0.0.tar.gz',
+    download_url='https://github.com/salunkhe-ravi/noompy/archive/v1.0.1.tar.gz',
     classifiers=[
 
         'Development Status :: 5 - Production/Stable',
