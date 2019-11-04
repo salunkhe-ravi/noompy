@@ -3,6 +3,11 @@ noompy is an Excel API which helps you to "query" your xls & xlsx files. It supp
 
 ## Getting Started
 
+### Pre-requisites
+
+```
+python version >= 3.6
+```
 
 ### Installing
 
@@ -20,10 +25,10 @@ End with an example of getting some data out of the system or using it for a lit
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=40")
-get_wheel_base = noom.get_data(data=res, key='some_col_name')
-print(get_wheel_base)
+noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE col_name=some_col_value")
+get_col_value = noom.get_data(data=res, key='some_key_col_name')
+print(get_col_value)
 print(res)
 
 ```
@@ -32,8 +37,8 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT wheel_base FROM Sheet1 WHERE tc_id=5.jgf")
+noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT col_name FROM Sheet1 WHERE col_name=some_col_value")
 print(res)
 
 ```
@@ -42,10 +47,10 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=5.jgf AND wheel_base=77.77")
-get_make = noom.get_data(data=res, key='make')
-print(get_make)
+noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE col_name1=some_col_value1 AND col_name2=some_col_value2")
+get_col_value = noom.get_data(data=res, key='some_key_col_name')
+print(get_col_value)
 print(res)
 
 ```
@@ -54,10 +59,10 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=5.jgf AND wheel_base=77.77 AND engine_location=front")
-get_make = noom.get_data(data=res, key='make')
-print(get_make)
+noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3")
+get_col_value = noom.get_data(data=res, key='some_key_col_name')
+print(get_col_value)
 print(res)
 
 ```
@@ -67,25 +72,14 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=5.jgf AND wheel_base=77.77 AND engine_location=front AND length=176.6")
-get_make = noom.get_data(data=res, key='make')
-print(get_make)
+noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
+res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3 AND col_name4=some_col_value4")
+get_col_value = noom.get_data(data=res, key='some_key_col_name')
+print(get_col_value)
 print(res)
 
 ```
 
-#### Example # 5
-
-```
-from api.noompy import NoomPy
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=5.jgf AND wheel_base=77.77 AND engine_location=front AND length=176.6 AND price=17450")
-get_make = noom.get_data(data=res, key='make')
-print(get_make)
-print(res)
-
-```
 
 ###UPDATE Query Examples
 
@@ -93,9 +87,8 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-res = noom.update_data(update_query="UPDATE Sheet1 SET make=test WHERE tc_id=10.11")
+noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
+res = noom.update_data(update_query="UPDATE Sheet1 SET col_name=col_value WHERE col_name=some_col_value")
 print(res)
 
 ```
@@ -104,43 +97,37 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
-res = noom.update_data(update_query="UPDATE Sheet1 SET make=test2 WHERE tc_id=10.11 AND body_style=ravi")
+noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
+res = noom.update_data(update_query="UPDATE Sheet1 SET col_name=col_value WHERE col_name1=some_col_value1 AND col_name2=some_col_value2")
 print(res)
 
 ```
 
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
 
-* [pandas](http://www.dropwizard.io/1.0.2/docs/) - The core framework used for excel dataframe manipulation
-* [xlrd/xlwt](https://maven.apache.org/) - Excel read/write
+* [pandas](https://pandas.pydata.org/pandas-docs/stable/) - The core framework used for excel dataframe manipulation
+* [openpyxl/xlrd/xlwt](http://www.python-excel.org/) - For working with Excel read/write etc.
 
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests.
+Please read [CONTRIBUTING.md](https://github.com/salunkhe-ravi/noompy/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/salunkhe-ravi/noompy/tags). 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Ravi Salunkhe** - *Initial work* - [salunkhe-ravi](https://github.com/salunkhe-ravi)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/salunkhe-ravi/noompy/graphs/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/salunkhe-ravi/noompy/blob/master/LICENSE) file for details
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Inspired by [fillo](https://codoid.com/fillo/) - Java based Excel API
+
