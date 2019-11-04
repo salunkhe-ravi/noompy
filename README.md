@@ -17,7 +17,10 @@ pip install noompy
 
 ## Usage
 
-### Note: Use SELECT, INSERT, WHERE and AND clauses in CAPITAL while writing the query. 
+### Note: 
+
+* Use SELECT, INSERT, WHERE and AND clauses in CAPITAL while writing the query.
+* A maximum of 4 "AND" conditions could be added to the query statement 
 
 ### SELECT Query Examples
 
