@@ -1,4 +1,5 @@
-from api.noompy import NoomPy
+# from api.noompy import NoomPy
+
 
 # SELECT Example #1
 # noom = NoomPy(excel_path='../sample_datasheet.xlsx')
