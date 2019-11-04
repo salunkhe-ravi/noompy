@@ -2,8 +2,6 @@ from api.core import execute_query
 from traceback import print_stack
 from os import path
 
-query = "Select * from Sheet1 where make='audi' and body_style='ravi'"
-
 __author__ = "Ravi Salunkhe"
 
 
@@ -23,14 +21,30 @@ class NoomPy:
             print_stack()
 
     def select_data(self, select_query):
+        """
+        selects and retrieves a single or multiple data set from given excel workbook source as provided
+        :param select_query:
+        :return: single or multiple data
+        """
         result = execute_query(global_excel_file_path, select_query)
         return result
 
     def update_data(self, update_query):
+        """
+        updates the given column value provided in the query with where condition
+        :param update_query:
+        :return: success message
+        """
         result = execute_query(global_excel_file_path, update_query)
         return result
 
     def get_data(self, data=None, key=None):
+        """
+        gets you the needed column value(key) from the provided data
+        :param data: data retrieved from noom.select_data()
+        :param key: column name
+        :return: value for the provided key(column)
+        """
         if data and key is not None:
             return data.get(key)
         else:

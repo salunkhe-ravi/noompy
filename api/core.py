@@ -5,20 +5,20 @@ data = None
 query_type = None
 
 
-def resolve_query(data, query):
-    if query.split(" ", 1)[0].strip() == 'SELECT':
-        return query_builder(data, query)
-    elif query.split(" ", 1)[0].strip() == 'INSERT':
-        return query_builder(data, query)
-    elif query.split(" ", 1)[0].strip() == 'UPDATE':
-        return query_builder(data, query)
-    else:
-        print('The query statement provided is incorrect - only SELECT, INSERT and UPDATE is supported! ')
-        print_stack()
+# def resolve_query(data, query):
+#     # resolving and redirecting teh query to relevant
+#     if query.split(" ", 1)[0].strip() == 'SELECT':
+#         return query_builder(data, query)
+#     elif query.split(" ", 1)[0].strip() == 'UPDATE':
+#         return query_builder(data, query)
+#     else:
+#         print('The query statement provided is incorrect - only SELECT and UPDATE is supported! ')
+#         print_stack()
 
 
 def query_builder(data, query):
     # splitting the query to work on building the expression from the "from" part
+    # only supported till 4 "AND" statements
     query_split = query.split(" ")
     if "WHERE" or "AND" in query:
         and_count = query.count("AND")
@@ -192,7 +192,7 @@ def execute_query(global_excel_file_path, query):
         # getting the sheet in memory and making a dataframe
         data = pd.read_excel(global_excel_file_path, sheet_name=sheet_name)
         # resolving query to a dataframe string
-        query_string = resolve_query(data, query)
+        query_string = query_builder(data, query)
         if "," not in query:
             # get selectors
             select_arg_list = query.split("FROM")[0].split(" ")[1].strip()
@@ -227,7 +227,7 @@ def execute_query(global_excel_file_path, query):
         # getting the sheet in memory and making a dataframe
         data = pd.read_excel(global_excel_file_path, sheet_name=sheet_name)
         # resolving query to a dataframe string
-        query_string = resolve_query(data, query)
+        query_string = query_builder(data, query)
         if query_string:
             data.to_excel(global_excel_file_path, index=False)
             return "UPDATE Successfull!"
