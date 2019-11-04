@@ -1,5 +1,5 @@
 # noompy
-noompy is an Excel API which helps you to "query" your xls & xlsx files. It supports SELECT and UPDATE statements.
+noompy is an Excel API which helps you to "query" your .xls & .xlsx files. It supports SELECT and UPDATE statements.
 
 ## Getting Started
 
@@ -15,9 +15,9 @@ python version >= 3.6
 pip install noompy
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
 ## Usage
+
+###Note: Use SELECT, INSERT, WHERE and AND clauses in CAPITAL while writing the query. 
 
 ###SELECT Query Examples
 
@@ -25,8 +25,8 @@ End with an example of getting some data out of the system or using it for a lit
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE col_name=some_col_value")
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name=some_col_value")
 get_col_value = noom.get_data(data=res, key='some_key_col_name')
 print(get_col_value)
 print(res)
@@ -37,8 +37,8 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT col_name FROM Sheet1 WHERE col_name=some_col_value")
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.select_data(select_query="SELECT col_name FROM sheet_name WHERE col_name=some_col_value")
 print(res)
 
 ```
@@ -47,8 +47,8 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE col_name1=some_col_value1 AND col_name2=some_col_value2")
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 AND col_name2=some_col_value2")
 get_col_value = noom.get_data(data=res, key='some_key_col_name')
 print(get_col_value)
 print(res)
@@ -59,8 +59,8 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3")
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3")
 get_col_value = noom.get_data(data=res, key='some_key_col_name')
 print(get_col_value)
 print(res)
@@ -72,8 +72,8 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
-res = noom.select_data(select_query="SELECT * FROM Sheet1 WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3 AND col_name4=some_col_value4")
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3 AND col_name4=some_col_value4")
 get_col_value = noom.get_data(data=res, key='some_key_col_name')
 print(get_col_value)
 print(res)
@@ -81,14 +81,26 @@ print(res)
 ```
 
 
+#### Example # 6
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3 AND col_name4=some_col_value4 AND col_name5=some_col_value5")
+get_col_value = noom.get_data(data=res, key='some_key_col_name')
+print(get_col_value)
+print(res)
+
+```
+
 ###UPDATE Query Examples
 
 #### Example # 1
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
-res = noom.update_data(update_query="UPDATE Sheet1 SET col_name=col_value WHERE col_name=some_col_value")
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.update_data(update_query="UPDATE sheet_name SET col_name=col_value WHERE col_name=some_col_value")
 print(res)
 
 ```
@@ -97,8 +109,8 @@ print(res)
 
 ```
 from api.noompy import NoomPy
-noom = NoomPy(excel_path='path_to_sample_datasheet.xlsx')
-res = noom.update_data(update_query="UPDATE Sheet1 SET col_name=col_value WHERE col_name1=some_col_value1 AND col_name2=some_col_value2")
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.update_data(update_query="UPDATE sheet_name SET col_name=col_value WHERE col_name1=some_col_value1 AND col_name2=some_col_value2")
 print(res)
 
 ```
@@ -111,11 +123,11 @@ print(res)
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/salunkhe-ravi/noompy/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/salunkhe-ravi/noompy/tags). 
+Used [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/salunkhe-ravi/noompy/tags). 
 
 ## Authors
 
@@ -125,7 +137,7 @@ See also the list of [contributors](https://github.com/salunkhe-ravi/noompy/grap
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/salunkhe-ravi/noompy/blob/master/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
 
 ## Acknowledgments
 
