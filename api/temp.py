@@ -1,21 +1,55 @@
-from api.noompy import NoomPy
+# from api.noompy import NoomPy
+#
+#
+# # "SELECT wheel_base FROM Sheet1 WHERE make=bmw AND curb_weight=2395 AND body_style=sedan"
+# # "SELECT * FROM Sheet1 WHERE tc_id=19"
+# # SELECT wheel_base FROM Sheet1 WHERE make=bmw AND curb_weight=2395
+#
+# # "UPDATE Sheet1 SET wheel_base=45.66 WHERE tc_id=4.jgf"
+#
+# noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+#
+# # noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=4.jgf")
+#
+# res = noom.select_data(select_query="INSERT INTO Sheet1(Name,Country) VALUES(Peter,UK)")
+#
+# # print(noom.get_data(data=res, key='tc_id'))
+# print(res)
+#
+# x = '4.jgf'
+# print(x.upper().isupper())
 
 
-# "SELECT wheel_base FROM Sheet1 WHERE make=bmw AND curb_weight=2395 AND body_style=sedan"
-# "SELECT * FROM Sheet1 WHERE tc_id=19"
-# SELECT wheel_base FROM Sheet1 WHERE make=bmw AND curb_weight=2395
 
-noom = NoomPy(excel_path='../sample_datasheet.xlsx')
+# "Select * from Sheet1 where make='audi'" -- will return a dataframe will filtered results based on the query
+# "Select * from Sheet1 where make='audi' and body_style='ravi'"
+# "Select length from Sheet1 where make='audi'"
+# "Select wheel_base from Sheet1 where make='audi' and body_style='ravi'"
 
-# noom.select_data(select_query="SELECT * FROM Sheet1 WHERE tc_id=4.jgf")
+# "Update Sheet1 Set Country='US' where ID=100 and name='John'";
+# "Select * from Sheet1 where make='audi' and body_style='ravi'"
+# "Select * from Sheet1 where make='audi'"
+# "Select length from Sheet1 where make='audi'"
+# "Select wheel_base, length from Sheet1 where make='audi' and body_style='ravi'"
+# "Select wheel_base, length from Sheet1"
 
-res = noom.select_data(select_query="SELECT wheel_base FROM Sheet1 WHERE make=bmw AND curb_weight=2395")
-
-# print(noom.get_data(data=res, key='tc_id'))
-print(res)
+# "Update Sheet1 Set Country='US' where ID=100 and name=John";
 
 
 
+
+#
+
+# query = "UPDATE Sheet1 SET Country='US' WHERE ID=100 and name=John";
+#
+# print(query.split("WHERE")[0].split("SET")[1].split("=")[0].strip())
+
+
+
+
+# f = "ahdhd66"
+#
+# print(type(f) == float)
 
 
 # r = "this is a test"
@@ -40,12 +74,14 @@ print(res)
 
 # print(type(10)==str)
 
-# import pandas as pd
-# import json
-# data = pd.read_excel("../sample_datasheet.xlsx", sheet_name='Sheet1')
-#
-# res = data[(data['tc_id'] == '4.jgf')].get('fuel_type')
-# print(res)
+import pandas as pd
+import json
+data = pd.read_excel("../sample_datasheet.xlsx", sheet_name='Sheet1')
+data.loc[(data['tc_id'] == '4.jgf') & (data['num_of_doors'] == 'ravi'), 'wheel_base'] = "testvaluenew"
+print(data)
+print(data.to_excel("../sample_datasheet.xlsx", index=False))
+
+
     # get('fuel_type').to_string(index=False)
 # res = data[data['make'] == 'audi']
 # res = res.replace("[", "").replace("]", "").replace("{","").replace("}","")
