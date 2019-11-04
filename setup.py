@@ -1,5 +1,8 @@
 from setuptools import setup
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='noompy',
     version='1.0.0',
@@ -33,5 +36,7 @@ setup(
         'Programming Language :: Python :: 3.7',
 
     ],
-    description='noompy is an Excel API which helps you to "query" your .xls & .xlsx files. It supports SELECT and UPDATE statements. '
+    description='noompy is an Excel API which helps you to "query" your .xls & .xlsx files. It supports SELECT and UPDATE statements. ',
+    long_description=long_description,
+    long_description_content_type="text/markdown"
 )
