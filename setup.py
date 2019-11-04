@@ -15,11 +15,11 @@ setup(
         'numpy',
         'openpyxl',
         'pandas',
-        'python-dateutil'
-        'pytz'
-        'six'
-        'xlrd'
-        'xlwt'
+        'python-dateutil',
+        'pytz',
+        'six',
+        'xlrd',
+        'xlwt',
     ],
     download_url='https://github.com/salunkhe-ravi/noompy/archive/v1.0.0.tar.gz',
     classifiers=[
