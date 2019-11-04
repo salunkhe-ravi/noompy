@@ -96,7 +96,7 @@ print(res)
 
 ```
 
-###UPDATE Query Examples
+### UPDATE Query Examples
 
 #### Example # 1
 
