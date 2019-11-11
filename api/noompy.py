@@ -1,6 +1,7 @@
 from core import execute_query
 from traceback import print_stack
 from os import path
+import json
 
 __author__ = "Ravi Salunkhe"
 
@@ -39,10 +40,11 @@ class NoomPy(object):
     def get_data(data=None, key=None):
         """
         gets you the needed column value(key) from the provided data
-        :param data: data retrieved from noom.select_data()
+        :param data: data retrieved from noom.select_data(), Data Type - JSON
         :param key: column name
         :return: value for the provided key(column)
         """
+        data = json.loads(data)
         if data and key is not None:
             return data.get(key)
         else:
