@@ -4,9 +4,10 @@ from os import path
 import json
 
 __author__ = "Ravi Salunkhe"
+__modified_by__ = "Akshay Deshpande"
 
 
-class NoomPy(object):
+class NoomPy:
     def __init__(self, excel_path=None):
         if excel_path is not None:
             if path.exists(excel_path):
