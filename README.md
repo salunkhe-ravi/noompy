@@ -1,5 +1,5 @@
 
-[![Downloads](https://pepy.tech/badge/noompy)](https://pepy.tech/project/noompy)  [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.org/project/noompy/)
+[![Downloads](https://pepy.tech/badge/noompy)](https://pepy.tech/project/noompy)  [![Downloads](https://pepy.tech/badge/noompy/month)](https://pepy.tech/project/noompy/month)  [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.org/project/noompy/)
 
 # noompy
 noompy is an Excel API which helps you to "query" your .xls & .xlsx files. It supports SELECT and UPDATE statements.
