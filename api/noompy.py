@@ -24,7 +24,7 @@ class NoomPy:
         selects and retrieves a single or multiple data set from given excel workbook source as provided
         :param index_of_record: This indicates index of record user wants in case of multiple records. Default is 0
         :param select_query: Query given by user
-        :return: single data and number of query matches
+        :return: single data and/or number of query matches
         """
         return execute_query(self.global_excel_file_path, select_query, index_of_record)
 
