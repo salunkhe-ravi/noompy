@@ -22,7 +22,7 @@ pip install noompy
 
 ### Note: 
 
-* Use SELECT, INSERT, WHERE, OR and AND clauses in CAPITAL while defining your query.
+* Use SELECT, UPDATE, WHERE, OR and AND clauses in CAPITAL while defining your query.
 
 ### SELECT Query Examples
 
@@ -142,7 +142,7 @@ print(res)
 
 ## Built With
 
-* [pandas](https://pandas.pydata.org/pandas-docs/stable/) - The core framework used for excel dataframe manipulation
+* [pandas](https://pandas.pydata.org/pandas-docs/stable/) - The core package used for excel dataframe manipulation
 * [openpyxl/xlrd/xlwt](http://www.python-excel.org/) - For working with Excel read/write etc.
 
 
@@ -152,7 +152,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [1.10.0] - 2019-11-13
+## [Unreleased]
+- Support for LIKE clause in query
+- Feature to support Excel cell formatting
+
+## [1.10] - 2019-11-13
 
 ### Added
 - Support for single/multiple 'OR' clause in the SELECT/UPDATE queries and a combination of AND/OR will also work.
