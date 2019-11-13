@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='noompy',
-    version='1.0.1',
+    version='1.10',
     packages=['api'],
     url='https://github.com/salunkhe-ravi/noompy',
     license='MIT',
@@ -26,7 +26,6 @@ setup(
     ],
     download_url='https://github.com/salunkhe-ravi/noompy/archive/v1.0.1.tar.gz',
     classifiers=[
-
         'Development Status :: 5 - Production/Stable',
         # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
         'Intended Audience :: Developers',
@@ -36,7 +35,7 @@ setup(
         'Programming Language :: Python :: 3.7',
 
     ],
-    description='noompy is an Excel API which helps you to "query" your .xls & .xlsx files. It supports SELECT and UPDATE statements. ',
+    description='noompy is a simple minimalistic Excel API which helps you to "query" your .xls & .xlsx files. It supports SELECT and UPDATE statements as well as WHERE, AND and OR conditions. ',
     long_description=long_description,
     long_description_content_type="text/markdown"
 )
