@@ -1,4 +1,4 @@
-from core import execute_query
+from api.core import execute_query
 from traceback import print_stack
 from os import path
 import json

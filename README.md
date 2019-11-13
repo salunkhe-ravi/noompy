@@ -22,8 +22,7 @@ pip install noompy
 
 ### Note: 
 
-* Use SELECT, INSERT, WHERE and AND clauses in CAPITAL while writing the query.
-* A maximum of 4 "AND" conditions could be added to the query statement 
+* Use SELECT, INSERT, WHERE, OR and AND clauses in CAPITAL while defining your query.
 
 ### SELECT Query Examples
 
@@ -44,12 +43,23 @@ print(res)
 ```
 from api.noompy import NoomPy
 noom = NoomPy(excel_path='path_to_.xlsx')
-res = noom.select_data(select_query="SELECT col_name FROM sheet_name WHERE col_name=some_col_value")
+res = noom.select_data(select_query="SELECT col_name1  FROM sheet_name WHERE col_name=some_col_value")
 print(res)
 
 ```
 
+
 #### Example # 3
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.select_data(select_query="SELECT col_name1, col_name2, col_name3  FROM sheet_name WHERE col_name=some_col_value")
+print(res)
+
+```
+
+#### Example # 4
 
 ```
 from api.noompy import NoomPy
@@ -61,25 +71,12 @@ print(res)
 
 ```
 
-#### Example # 4
-
-```
-from api.noompy import NoomPy
-noom = NoomPy(excel_path='path_to_.xlsx')
-res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3")
-get_col_value = noom.get_data(data=res, key='some_key_col_name')
-print(get_col_value)
-print(res)
-
-```
-
-
 #### Example # 5
 
 ```
 from api.noompy import NoomPy
 noom = NoomPy(excel_path='path_to_.xlsx')
-res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3 AND col_name4=some_col_value4")
+res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 OR col_name3=some_col_value3")
 get_col_value = noom.get_data(data=res, key='some_key_col_name')
 print(get_col_value)
 print(res)
@@ -92,7 +89,20 @@ print(res)
 ```
 from api.noompy import NoomPy
 noom = NoomPy(excel_path='path_to_.xlsx')
-res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3 AND col_name4=some_col_value4 AND col_name5=some_col_value5")
+res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 AND col_name2=some_col_value2 AND col_name3=some_col_value3 AND col_name4=some_col_value4")
+get_col_value = noom.get_data(data=res, key='some_key_col_name')
+print(get_col_value)
+print(res)
+
+```
+
+
+#### Example # 7
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.select_data(select_query="SELECT * FROM sheet_name WHERE col_name1=some_col_value1 OR col_name2=some_col_value2 AND col_name3=some_col_value3 AND col_name4=some_col_value4 AND col_name5=some_col_value5")
 get_col_value = noom.get_data(data=res, key='some_key_col_name')
 print(get_col_value)
 print(res)
@@ -116,7 +126,17 @@ print(res)
 ```
 from api.noompy import NoomPy
 noom = NoomPy(excel_path='path_to_.xlsx')
-res = noom.update_data(update_query="UPDATE sheet_name SET col_name=col_value WHERE col_name1=some_col_value1 AND col_name2=some_col_value2")
+res = noom.update_data(update_query="UPDATE sheet_name SET col_name=col_value WHERE col_name1=some_col_value1 OR col_name2=some_col_value2")
+print(res)
+
+```
+
+#### Example # 3
+
+```
+from api.noompy import NoomPy
+noom = NoomPy(excel_path='path_to_.xlsx')
+res = noom.update_data(update_query="UPDATE sheet_name SET col_name1=col_value1, col_name2=col_value2 WHERE col_name1=some_col_value1 AND col_name2=some_col_value2")
 print(res)
 
 ```
@@ -125,6 +145,33 @@ print(res)
 
 * [pandas](https://pandas.pydata.org/pandas-docs/stable/) - The core framework used for excel dataframe manipulation
 * [openpyxl/xlrd/xlwt](http://www.python-excel.org/) - For working with Excel read/write etc.
+
+
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+
+## [1.10.0] - 2019-11-13
+
+### Added
+- Support for single/multiple 'OR' clause in the SELECT/UPDATE queries and a combination of AND/OR will also work.
+- We can now use multiple column names in SELECT/UPDATE statements separated by comma(,) for data retrieval
+- index_of_record argument in SELECT/UPDATE functions which indicates the index of record user wants in case of multiple records. Default is 0
+
+### Changed
+- query_builder function and its implementation to work with multiple combinations of AND/OR clause statements 
+- The logic to parse the SELECT/UPDATE query statements to handle n-number of AND conditions.
+- get_data() method to static
+
+### Removed
+- A maximum limit of 4 "AND" conditions to be added to the query statement
+- Support for single column in SELECT/UPDATE statements for data retrieval  
+
+
+## [1.0.1] - 2019-11-04
+- Initial Release
 
 
 ## Contributing

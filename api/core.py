@@ -23,7 +23,7 @@ def execute_query(global_excel_file_path, query, index_of_record):
     :param global_excel_file_path: Path to the file to read
     :param query: Query given by the user
     :param index_of_record: The index of data which is to be selected or updated. Default index is 0.
-    :return:
+    :return: True if update is successful
     """
     if query.startswith("SELECT"):
         # extracting sheet name
@@ -81,7 +81,7 @@ def execute_query(global_excel_file_path, query, index_of_record):
         # Updating main dataframe.
         data.update(res_df)
         data.to_excel(global_excel_file_path, index=False)
-        return "UPDATE Successfull!"
+        return True
     else:
         print("Please provide valid query expression. Only SELECT and UPDATE statements are supported.")
         print_stack()
