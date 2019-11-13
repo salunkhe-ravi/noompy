@@ -2,7 +2,7 @@
 [![Downloads](https://pepy.tech/badge/noompy)](https://pepy.tech/project/noompy)  [![Downloads](https://pepy.tech/badge/noompy/month)](https://pepy.tech/project/noompy/month)  [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.org/project/noompy/)
 
 # noompy
-noompy is an Excel API which helps you to "query" your .xls & .xlsx files. It supports SELECT and UPDATE statements.
+noompy is a simple minimalistic Excel API which helps you to "query" your .xls & .xlsx files. It supports SELECT and UPDATE statements as well as WHERE, AND and OR conditions.
 
 ## Getting Started
 
@@ -43,18 +43,17 @@ print(res)
 ```
 from api.noompy import NoomPy
 noom = NoomPy(excel_path='path_to_.xlsx')
-res = noom.select_data(select_query="SELECT col_name1  FROM sheet_name WHERE col_name=some_col_value")
+res = noom.select_data(select_query="SELECT col_name1 FROM sheet_name WHERE col_name=some_col_value")
 print(res)
 
 ```
-
 
 #### Example # 3
 
 ```
 from api.noompy import NoomPy
 noom = NoomPy(excel_path='path_to_.xlsx')
-res = noom.select_data(select_query="SELECT col_name1, col_name2, col_name3  FROM sheet_name WHERE col_name=some_col_value")
+res = noom.select_data(select_query="SELECT col_name1, col_name2, col_name3 FROM sheet_name WHERE col_name=some_col_value")
 print(res)
 
 ```
