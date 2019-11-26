@@ -1,38 +1,29 @@
-from traceback import print_stack
 import pandas as pd
+from traceback import print_stack
 import json
 
 
-def _query_builder(data_frame, query):
-    """
-    It builds a new dataframe depending on the where clause.
-    :param data_frame: The dataframe created by reading the csv file
-    :param query: Query given by the user.
-    :return: Dataframe created by the where clause, else an empty dataframe.
-    """
-    if "WHERE" in query:
-        query_str = query.split("WHERE")[1].strip()
-        return data_frame.query(query_str.replace("=", "==").replace(" AND ", " and ").replace(" OR ", " or "))
-    else:
-        return pd.DataFrame()
+class CommonOperations:
+    @staticmethod
+    def where_clause(data_frame, query):
+        if "WHERE" in query:
+            query_str = query.split("WHERE")[1].strip()
+            return data_frame.query(query_str.replace("=", "==").replace(" AND ", " and ").replace(" OR ", " or "))
+        else:
+            return pd.DataFrame()
 
 
-def execute_query(global_excel_file_path, query, index_of_record):
-    """
-    This function executes the query given by the User
-    :param global_excel_file_path: Path to the file to read
-    :param query: Query given by the user
-    :param index_of_record: The index of data which is to be selected or updated. Default index is 0.
-    :return: True if update is successful
-    """
-    if query.startswith("SELECT"):
+class SelectOperation(CommonOperations):
+    def __init__(self, file_path, query):
+        self.query = query
         # extracting sheet name
-        sheet_name = query.split("FROM")[1].split("WHERE")[0].strip()
+        self.sheet_name = query.split("FROM")[1].split("WHERE")[0].strip()
         # getting the sheet in memory and making a dataframe
-        data = pd.read_excel(global_excel_file_path, sheet_name=sheet_name)
+        self.data = pd.read_excel(file_path, sheet_name=self.sheet_name)
 
+    def operate(self, index_of_record=0):
         # resolving query to a dataframe string
-        query_string = _query_builder(data, query)
+        query_string = self.where_clause(self.data, self.query)
         if query_string.empty:
             return "WHERE clause did not retrieve any matching result."
 
@@ -40,7 +31,7 @@ def execute_query(global_excel_file_path, query, index_of_record):
         res = query_string.to_dict(orient='records')[index_of_record]
 
         # To get the list of columns whose data is required.
-        select_arg_list = query.split("FROM")[0].strip().split(",")
+        select_arg_list = self.query.split("FROM")[0].strip().split(",")
         # To remove SELECT keyword.
         temp = select_arg_list[0].strip("SELECT")
         select_arg_list.pop(0)
@@ -54,19 +45,24 @@ def execute_query(global_excel_file_path, query, index_of_record):
                 result_dict[key.strip()] = res.get(key.strip())
             return json.dumps(result_dict)
 
-    elif query.startswith("UPDATE"):
-        # extracting sheet name
-        sheet_name = query.split("SET")[0].split(" ")[1].strip()
-        # getting the sheet in memory and making a dataframe
-        data = pd.read_excel(global_excel_file_path, sheet_name=sheet_name)
 
+class UpdateOperation(CommonOperations):
+    def __init__(self, file_path, query):
+        self.query = query
+        self.file_path = file_path
+        # extracting sheet name
+        self.sheet_name = query.split("SET")[0].split(" ")[1].strip()
+        # getting the sheet in memory and making a dataframe
+        self.data = pd.read_excel(file_path, sheet_name=self.sheet_name)
+
+    def operate(self, index_of_record=0, auto_save=True):
         # resolving query to a dataframe string
-        res_df = _query_builder(data, query)
+        res_df = self.where_clause(self.data, self.query)
         if res_df.empty:
             return "Where Clause did not retrieve any matching result."
 
         # To get the list of columns whose data is to be updated
-        select_arg_list = query.split("WHERE")[0].split("SET")[1].strip().split(",")
+        select_arg_list = self.query.split("WHERE")[0].split("SET")[1].strip().split(",")
         col_name = []
         new_col_val = []
         for val in select_arg_list:
@@ -79,9 +75,28 @@ def execute_query(global_excel_file_path, query, index_of_record):
         res_df.loc[[list(res_df.index.values)[index_of_record]], col_name] = new_col_val
 
         # Updating main dataframe.
-        data.update(res_df)
-        data.to_excel(global_excel_file_path, index=False)
+        self.data.update(res_df)
+
+        if auto_save:
+            self.data.to_excel(self.file_path, index=False)
+            return True
+        return self.data
+
+
+class DeleteOperation(CommonOperations):
+    def __init__(self, file_path, query):
+        self.query = query
+        self.file_path = file_path
+        # extracting sheet name
+        self.sheet_name = query.split("FROM")[1].split("WHERE")[0].strip()
+        # getting the sheet in memory and making a dataframe
+        self.data = pd.read_excel(file_path, sheet_name=self.sheet_name)
+
+    def operate(self, index_of_record=0):
+        res_df = self.where_clause(self.data, self.query)
+        if res_df.empty:
+            return "Where Clause did not retrieve any matching result."
+        self.data = self.data.drop(res_df.index.values[index_of_record])
+        self.data.to_excel(self.file_path, index=False)
         return True
-    else:
-        print("Please provide valid query expression. Only SELECT and UPDATE statements are supported.")
-        print_stack()
+
