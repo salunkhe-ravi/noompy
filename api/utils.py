@@ -9,13 +9,6 @@ def where_clause(data_frame, query):
         return pd.DataFrame()
 
 
-def strip_head_trail_ws(column_lst, keyword):
-    temp = column_lst[0].strip(keyword)
-    column_lst.pop(0)
-    column_lst.insert(0, temp.strip())
-    return column_lst
-
-
 def check_data_source(data_frame):
     if data_frame.empty:
         return True

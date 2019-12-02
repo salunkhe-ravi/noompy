@@ -2,7 +2,7 @@ import pandas as pd
 from traceback import print_stack
 import json
 import utils
-import constants
+import enums
 
 
 class SelectOperation:
@@ -20,19 +20,17 @@ class SelectOperation:
         :return: JSON response of the data frame else EMPTY_DF string in case of no data matches with where clause.
         """
         if utils.check_data_source(self.data):
-            return json.dumps(constants.EMPTY_DATA_SOURCE)
+            return json.dumps(enums.ErrorMSG.EMPTY_DATA_SOURCE.name)
         # resolving query to a dataframe string
         query_string = utils.where_clause(self.data, self.query)
         if query_string.empty:
-            return json.dumps(constants.EMPTY_DF)
+            return json.dumps(enums.ErrorMSG.EMPTY_DF.name)
 
         # For time being only take the first record
         res = query_string.to_dict(orient='records')[index_of_record]
 
         # To get the list of columns whose data is required.
-        select_arg_list = self.query.split("FROM")[0].strip().split(",")
-        # To remove SELECT keyword.
-        select_arg_list = utils.strip_head_trail_ws(select_arg_list, "SELECT")
+        select_arg_list = self.query.split("FROM")[0].split("SELECT")[1].strip().split(",")
 
         if len(select_arg_list) == 1 and "*" in select_arg_list:
             return json.dumps(res)
@@ -61,11 +59,11 @@ class UpdateOperation:
         :return: True if auto save is set, else it will return the modified data frame.
         """
         if utils.check_data_source(self.data):
-            return constants.EMPTY_DATA_SOURCE
+            return json.dumps(enums.ErrorMSG.EMPTY_DATA_SOURCE.name)
         # resolving query to a dataframe string
         res_df = utils.where_clause(self.data, self.query)
         if res_df.empty:
-            return constants.EMPTY_DF
+            return json.dumps(enums.ErrorMSG.EMPTY_DF.name)
 
         # To get the list of columns whose data is to be updated
         select_arg_list = self.query.split("WHERE")[0].split("SET")[1].strip().split(",")
@@ -108,15 +106,15 @@ class DeleteOperation:
         """
         # Check if the data read from source is not empty
         if utils.check_data_source(self.data):
-            return constants.EMPTY_DATA_SOURCE
+            return json.dumps(enums.ErrorMSG.EMPTY_DATA_SOURCE.name)
 
         # Check if the operation is for deleting a row/column/cell
         query_lst = self.query.split()
-        if constants.DELETE_ROW in query_lst[0]:
+        if enums.QueryOPS.DELETE_ROW.name in query_lst[0]:
             self.data = self._delete_row(index_of_record)
-        elif constants.DELETE_CELL in query_lst[0]:
+        elif enums.QueryOPS.DELETE_CELL.name in query_lst[0]:
             self._delete_cell(index_of_record)
-        elif constants.DELETE_COLUMN in query_lst[0]:
+        elif enums.QueryOPS.DELETE_COLUMN.name in query_lst[0]:
             self.data = self._delete_column()
 
         # This will check if cell/row/column deletion returns any string data(in case of empty where clause)
@@ -131,19 +129,18 @@ class DeleteOperation:
     def _delete_cell(self, index_of_record):
         res_df = utils.where_clause(self.data, self.query)
         if res_df.empty:
-            return constants.EMPTY_DF
+            return json.dumps(enums.ErrorMSG.EMPTY_DF.name)
         # To get the list of columns whose data is to be updated
-        column_lst = self.query.split("FROM")[0].split(",")
-        column_lst = utils.strip_head_trail_ws(column_lst, constants.DELETE_CELL)
+        column_lst = self.query.split("FROM")[0].split(enums.QueryOPS.DELETE_CELL)[1].strip().split(",")
 
         # Strip any white spaces in between the elements of column_lst.
         col_lst = []
-        for col in column_lst:
+        for col in column_ls:
             col_lst.append(col.strip())
 
         # Updating the column values. The copy prevents SettingWithCopyWarning warning.
         res_df = res_df.loc[[res_df.index.values[index_of_record]], col_lst].copy()
-        res_df.loc[[res_df.index.values[index_of_record]], col_lst] = constants.EMPTY_CELL_VALUE
+        res_df.loc[[res_df.index.values[index_of_record]], col_lst] = enums.QueryOPS.EMPTY_CELL_VALUE.name
 
         # Updating main dataframe.
         return self.data.update(res_df)
@@ -151,13 +148,12 @@ class DeleteOperation:
     def _delete_row(self, index_of_record):
         res_df = utils.where_clause(self.data, self.query)
         if res_df.empty:
-            return constants.EMPTY_DF
+            return json.dumps(enums.ErrorMSG.EMPTY_DF.name)
         return self.data.drop(res_df.index.values[index_of_record])
 
     def _delete_column(self):
         # Filter list of columns for deletion
-        column_lst = self.query.split("FROM")[0].split(",")
-        column_lst = utils.strip_head_trail_ws(column_lst, constants.DELETE_COLUMN)
+        column_lst = self.query.split("FROM")[0].split(enums.QueryOPS.DELETE_COLUMN)[1].strip().split(",")
 
         # Strip any white spaces in between the elements of list.
         col_lst = []
