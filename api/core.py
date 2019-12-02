@@ -1,19 +1,11 @@
 import pandas as pd
 from traceback import print_stack
 import json
+import utils
+import constants
 
 
-class CommonOperations:
-    @staticmethod
-    def where_clause(data_frame, query):
-        if "WHERE" in query:
-            query_str = query.split("WHERE")[1].strip()
-            return data_frame.query(query_str.replace("=", "==").replace(" AND ", " and ").replace(" OR ", " or "))
-        else:
-            return pd.DataFrame()
-
-
-class SelectOperation(CommonOperations):
+class SelectOperation:
     def __init__(self, file_path, query):
         self.query = query
         # extracting sheet name
@@ -22,10 +14,17 @@ class SelectOperation(CommonOperations):
         self.data = pd.read_excel(file_path, sheet_name=self.sheet_name)
 
     def operate(self, index_of_record=0):
+        """
+        :param index_of_record: This indicates the index of record user wants to delete in case of multiple records.
+        Default is 0.
+        :return: JSON response of the data frame else EMPTY_DF string in case of no data matches with where clause.
+        """
+        if utils.check_data_source(self.data):
+            return json.dumps(constants.EMPTY_DATA_SOURCE)
         # resolving query to a dataframe string
-        query_string = self.where_clause(self.data, self.query)
+        query_string = utils.where_clause(self.data, self.query)
         if query_string.empty:
-            return "WHERE clause did not retrieve any matching result."
+            return json.dumps(constants.EMPTY_DF)
 
         # For time being only take the first record
         res = query_string.to_dict(orient='records')[index_of_record]
@@ -33,9 +32,7 @@ class SelectOperation(CommonOperations):
         # To get the list of columns whose data is required.
         select_arg_list = self.query.split("FROM")[0].strip().split(",")
         # To remove SELECT keyword.
-        temp = select_arg_list[0].strip("SELECT")
-        select_arg_list.pop(0)
-        select_arg_list.insert(0, temp.strip())
+        select_arg_list = utils.strip_head_trail_ws(select_arg_list, "SELECT")
 
         if len(select_arg_list) == 1 and "*" in select_arg_list:
             return json.dumps(res)
@@ -46,7 +43,7 @@ class SelectOperation(CommonOperations):
             return json.dumps(result_dict)
 
 
-class UpdateOperation(CommonOperations):
+class UpdateOperation:
     def __init__(self, file_path, query):
         self.query = query
         self.file_path = file_path
@@ -56,10 +53,19 @@ class UpdateOperation(CommonOperations):
         self.data = pd.read_excel(file_path, sheet_name=self.sheet_name)
 
     def operate(self, index_of_record=0, auto_save=True):
+        """
+        :param index_of_record: This indicates the index of record user wants to delete in case of multiple records.
+        Default is 0.
+        :param auto_save: This when set to True will save the dataframe to the excel file and return True,
+        else it will delete the row/cell/column depending on query and return the modified data frame.
+        :return: True if auto save is set, else it will return the modified data frame.
+        """
+        if utils.check_data_source(self.data):
+            return constants.EMPTY_DATA_SOURCE
         # resolving query to a dataframe string
-        res_df = self.where_clause(self.data, self.query)
+        res_df = utils.where_clause(self.data, self.query)
         if res_df.empty:
-            return "Where Clause did not retrieve any matching result."
+            return constants.EMPTY_DF
 
         # To get the list of columns whose data is to be updated
         select_arg_list = self.query.split("WHERE")[0].split("SET")[1].strip().split(",")
@@ -71,8 +77,8 @@ class UpdateOperation(CommonOperations):
             new_col_val.append(v.strip().strip("'"))
 
         # Updating the column values. The copy prevents SettingWithCopyWarning warning.
-        res_df = res_df.loc[[list(res_df.index.values)[index_of_record]], col_name].copy()
-        res_df.loc[[list(res_df.index.values)[index_of_record]], col_name] = new_col_val
+        res_df = res_df.loc[[res_df.index.values[index_of_record]], col_name].copy()
+        res_df.loc[[res_df.index.values[index_of_record]], col_name] = new_col_val
 
         # Updating main dataframe.
         self.data.update(res_df)
@@ -83,7 +89,7 @@ class UpdateOperation(CommonOperations):
         return self.data
 
 
-class DeleteOperation(CommonOperations):
+class DeleteOperation:
     def __init__(self, file_path, query):
         self.query = query
         self.file_path = file_path
@@ -92,11 +98,70 @@ class DeleteOperation(CommonOperations):
         # getting the sheet in memory and making a dataframe
         self.data = pd.read_excel(file_path, sheet_name=self.sheet_name)
 
-    def operate(self, index_of_record=0):
-        res_df = self.where_clause(self.data, self.query)
-        if res_df.empty:
-            return "Where Clause did not retrieve any matching result."
-        self.data = self.data.drop(res_df.index.values[index_of_record])
-        self.data.to_excel(self.file_path, index=False)
-        return True
+    def operate(self, index_of_record=0, auto_save=True):
+        """
+        :param index_of_record: This indicates the index of record user wants to delete in case of multiple records.
+        Default is 0.
+        :param auto_save: This when set to True will save the dataframe to the excel file and return True,
+        else it will delete the row/cell/column depending on query and return the modified data frame.
+        :return True if auto save is set, else it will return the modified data frame.
+        """
+        # Check if the data read from source is not empty
+        if utils.check_data_source(self.data):
+            return constants.EMPTY_DATA_SOURCE
 
+        # Check if the operation is for deleting a row/column/cell
+        query_lst = self.query.split()
+        if constants.DELETE_ROW in query_lst[0]:
+            self.data = self._delete_row(index_of_record)
+        elif constants.DELETE_CELL in query_lst[0]:
+            self._delete_cell(index_of_record)
+        elif constants.DELETE_COLUMN in query_lst[0]:
+            self.data = self._delete_column()
+
+        # This will check if cell/row/column deletion returns any string data(in case of empty where clause)
+        # Auto save when set will save the data to excel sheet, else it will return the data frame.
+        if isinstance(self.data, str):
+            return self.data
+        elif auto_save:
+            self.data.to_excel(self.file_path, index=False)
+            return True
+        return self.data
+
+    def _delete_cell(self, index_of_record):
+        res_df = utils.where_clause(self.data, self.query)
+        if res_df.empty:
+            return constants.EMPTY_DF
+        # To get the list of columns whose data is to be updated
+        column_lst = self.query.split("FROM")[0].split(",")
+        column_lst = utils.strip_head_trail_ws(column_lst, constants.DELETE_CELL)
+
+        # Strip any white spaces in between the elements of column_lst.
+        col_lst = []
+        for col in column_lst:
+            col_lst.append(col.strip())
+
+        # Updating the column values. The copy prevents SettingWithCopyWarning warning.
+        res_df = res_df.loc[[res_df.index.values[index_of_record]], col_lst].copy()
+        res_df.loc[[res_df.index.values[index_of_record]], col_lst] = constants.EMPTY_CELL_VALUE
+
+        # Updating main dataframe.
+        return self.data.update(res_df)
+
+    def _delete_row(self, index_of_record):
+        res_df = utils.where_clause(self.data, self.query)
+        if res_df.empty:
+            return constants.EMPTY_DF
+        return self.data.drop(res_df.index.values[index_of_record])
+
+    def _delete_column(self):
+        # Filter list of columns for deletion
+        column_lst = self.query.split("FROM")[0].split(",")
+        column_lst = utils.strip_head_trail_ws(column_lst, constants.DELETE_COLUMN)
+
+        # Strip any white spaces in between the elements of list.
+        col_lst = []
+        for col in column_lst:
+            col_lst.append(col.strip())
+
+        return self.data.drop(columns=col_lst, axis=1)

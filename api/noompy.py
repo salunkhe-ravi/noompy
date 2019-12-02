@@ -2,6 +2,7 @@ import core
 from traceback import print_stack
 from os import path
 import json
+import constants
 
 __author__ = "Ravi Salunkhe"
 __modified_by__ = "Akshay Deshpande"
@@ -13,10 +14,10 @@ class NoomPy:
             if path.exists(excel_path):
                 self.excel_file_path = excel_path
             else:
-                print("excel_path provided does not exist, please check")
+                print(constants.FILE_PATH_DOES_NOT_EXISTS)
                 print_stack()
         else:
-            print('Please provide the excel_path')
+            print(constants.FILE_PATH_ERROR)
             print_stack()
 
     def select_data(self, select_query, index_of_record=0):
@@ -39,15 +40,21 @@ class NoomPy:
         """
         return core.UpdateOperation(self.excel_file_path, update_query).operate(index_of_record, auto_save)
 
-    def delete_data(self, delete_query, index_of_record=0):
+    def delete_data(self, delete_query, index_of_record=0, auto_save=True):
         """
         Deletes the given row provided in the query with where condition.
         :param delete_query: Query given by user.
         :param index_of_record: This indicates the index of record user wants to delete in case of multiple records.
-                                Default is 0.
+        Default is 0.
+        :param auto_save: This when set to True will save the dataframe to the excel file and return True,
+        else it will delete the row/cell/column depending on query and return the modified data frame.
+
+        DELETECELL <CELL_COLUMN NAME> FROM <SHEET> WHERE <CONDITION>
+        DELETEROW FROM <SHEET> WHERE <CONDITION>
+        DELETECOLUMN <COLUMNNAME> FROM <SHEET>
         :return: Success message.
         """
-        return core.DeleteOperation(self.excel_file_path, delete_query).operate(index_of_record)
+        return core.DeleteOperation(self.excel_file_path, delete_query).operate(index_of_record, auto_save)
 
     @staticmethod
     def get_data(data=None, key=None):
@@ -61,4 +68,4 @@ class NoomPy:
         if data and key is not None:
             return data.get(key)
         else:
-            print('data or key is None')
+            print(constants.KEY_ERROR)
