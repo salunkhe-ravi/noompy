@@ -2,7 +2,6 @@ import core
 from traceback import print_stack
 from os import path
 import json
-import enums
 
 __author__ = "Ravi Salunkhe"
 __modified_by__ = "Akshay Deshpande"
@@ -14,10 +13,10 @@ class NoomPy:
             if path.exists(excel_path):
                 self.excel_file_path = excel_path
             else:
-                print(enums.FileOPS.FILE_PATH_DOES_NOT_EXISTS.name)
+                print("excel_path provided does not exist, please check")
                 print_stack()
         else:
-            print(enums.FileOPS.FILE_PATH_ERROR.name)
+            print("Please provide the excel_path")
             print_stack()
 
     def select_data(self, select_query, index_of_record=0):
@@ -68,4 +67,4 @@ class NoomPy:
         if data and key is not None:
             return data.get(key)
         else:
-            print(enums.ErrorMSG.KEY_ERROR.name)
+            print("Data or Key is None")
